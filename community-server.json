@@ -12266,6 +12266,45 @@
         }
       }
     },
+    "/api/2.0/community/preview": {
+      "post": {
+        "tags": [
+          "community"
+        ],
+        "summary": "Get preview",
+        "description": "Returns the preview information about the specified category from the community section.",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "body",
+            "description": "Category title",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "content",
+            "in": "body",
+            "description": "Category content",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Preview information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/2.0/community/wiki": {
       "post": {
         "tags": [
@@ -67652,6 +67691,1180 @@
         }
       }
     },
+    "/api/2.0/group/": {
+      "get": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Get groups",
+        "description": "Returns the general information about all the groups, such as group ID and group manager.\n\n**Note**: This method returns partial group information.",
+        "responses": {
+          "200": {
+            "description": "List of groups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Name": {
+                        "type": "String"
+                      },
+                      "Id": {
+                        "type": "Guid"
+                      },
+                      "Manager": {
+                        "type": "String"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Add a new group",
+        "description": "Adds a new group with the group manager, name, and members specified in the request.",
+        "parameters": [
+          {
+            "name": "groupManager",
+            "in": "body",
+            "description": "Group manager",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "groupName",
+            "in": "body",
+            "description": "Group name",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "members",
+            "in": "body",
+            "description": "List of group members",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "Guid"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly created group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/group/search": {
+      "get": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Get groups by a group name",
+        "description": "Returns a list of all the groups by the group name specified in the request.",
+        "parameters": [
+          {
+            "name": "groupName",
+            "in": "body",
+            "description": "Group name",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of groups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Name": {
+                        "type": "String"
+                      },
+                      "Id": {
+                        "type": "Guid"
+                      },
+                      "Manager": {
+                        "type": "String"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/group/{groupid}": {
+      "get": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Get a group",
+        "description": "Returns the detailed information about the selected group: group name, category, description, manager, members, and parent group if it exists.\n\n**Note**: This method returns full group information.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID",
+            "schema": {
+              "type": "Guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Update a group",
+        "description": "Updates the existing group changing the group manager, name, and/or members.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "groupManager",
+            "in": "body",
+            "description": "New group manager",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "groupName",
+            "in": "body",
+            "description": "New group name",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "members",
+            "in": "body",
+            "description": "New list of group members",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "Guid"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Delete a group",
+        "description": "Deletes a group with the ID specified in the request from the list of groups on the portal.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID",
+            "schema": {
+              "type": "Guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/group/user/{userid}": {
+      "get": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Get user groups",
+        "description": "Returns a list of groups for the user with the ID specified in the request.",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "Guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Name": {
+                        "type": "String"
+                      },
+                      "Id": {
+                        "type": "Guid"
+                      },
+                      "Manager": {
+                        "type": "String"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/group/{groupid}/members/{newgroupid}": {
+      "put": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Move group members",
+        "description": "Moves all the members from the selected group to another one specified in the request.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID to move from",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "newgroupid",
+            "in": "path",
+            "description": "Group ID to move to",
+            "schema": {
+              "type": "Guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New group information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/group/{groupid}/members": {
+      "post": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Replace group members",
+        "description": "Replaces the group members with those specified in the request.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "members",
+            "in": "body",
+            "description": "List of new members",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "Guid"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Add group members",
+        "description": "Adds new group members to the group with the ID specified in the request.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "members",
+            "in": "body",
+            "description": "List of new members",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "Guid"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Remove group members",
+        "description": "Removes the group members specified in the request from the selected group.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "members",
+            "in": "body",
+            "description": "List of group members",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "Guid"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/group/{groupid}/manager": {
+      "put": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Set a group manager",
+        "description": "Sets a user with the ID specified in the request as a group manager.",
+        "parameters": [
+          {
+            "name": "groupid",
+            "in": "path",
+            "description": "Group ID",
+            "schema": {
+              "type": "Guid"
+            }
+          },
+          {
+            "name": "userid",
+            "in": "body",
+            "description": "User ID",
+            "schema": {
+              "type": "Guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Description": {
+                      "type": "String"
+                    },
+                    "Name": {
+                      "type": "String"
+                    },
+                    "Parent": {
+                      "type": "array",
+                      "items": {
+                        "type": "Guid"
+                      }
+                    },
+                    "Category": {
+                      "type": "Guid"
+                    },
+                    "Id": {
+                      "type": "Guid"
+                    },
+                    "Manager": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "Guid"
+                        },
+                        "DisplayName": {
+                          "type": "String"
+                        },
+                        "Title": {
+                          "type": "String"
+                        },
+                        "AvatarSmall": {
+                          "type": "String"
+                        },
+                        "ProfileUrl": {
+                          "type": "String"
+                        }
+                      }
+                    },
+                    "Members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "Guid"
+                          },
+                          "DisplayName": {
+                            "type": "String"
+                          },
+                          "Title": {
+                            "type": "String"
+                          },
+                          "AvatarSmall": {
+                            "type": "String"
+                          },
+                          "ProfileUrl": {
+                            "type": "String"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/feed//read": {
+      "put": {
+        "tags": [
+          "feed"
+        ],
+        "summary": "Read feeds",
+        "description": "Opens feeds for reading.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "Void"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/feed//filter": {
+      "get": {
+        "tags": [
+          "feed"
+        ],
+        "summary": "Get feeds",
+        "description": "Returns a list of feeds that are filtered by the parameters specified in the request.",
+        "parameters": [
+          {
+            "name": "product",
+            "in": "body",
+            "description": "Product which feeds you want to read",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "from",
+            "in": "body",
+            "description": "Time from which the feeds should be displayed",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "to",
+            "in": "body",
+            "description": "Time until which the feeds should be displayed",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "author",
+            "in": "body",
+            "description": "Author whose feeds you want to read",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "Guid"
+              }
+            }
+          },
+          {
+            "name": "onlyNew",
+            "in": "body",
+            "description": "Displays only fresh feeds",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "Boolean"
+              }
+            }
+          },
+          {
+            "name": "timeReaded",
+            "in": "body",
+            "description": "Time when the feeds were read",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of filtered feeds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/feed//newfeedscount": {
+      "get": {
+        "tags": [
+          "feed"
+        ],
+        "summary": "Count fresh feeds",
+        "description": "Returns a number of fresh feeds.",
+        "responses": {
+          "200": {
+            "description": "Number of fresh feeds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/2.0/mail/conversations/crm/link": {
       "put": {
         "tags": [
@@ -79385,6 +80598,365 @@
             }
           }
         }
+      }
+    },
+    "/api/2.0/MigrationApi/tmp": {
+      "get": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Get migration temporary folder",
+        "description": "Returns the temporary folder where all the migration files are stored.",
+        "responses": {
+          "200": {
+            "description": "Path to the migration temporary folder",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "String"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/MigrationApi/list": {
+      "get": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Get migrations",
+        "description": "Returns all the available migrations.",
+        "responses": {
+          "200": {
+            "description": "List of migrations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "String"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/MigrationApi/migratorsInfo": {
+      "post": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Get migrator information",
+        "description": "Returns the information about the migrators with the names specified in the request.",
+        "parameters": [
+          {
+            "name": "migratorsName",
+            "in": "body",
+            "description": "List of migrator names",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "String"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of migrator information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "MigratorName": {
+                        "type": "String"
+                      },
+                      "NumberOfSteps": {
+                        "type": "Int32"
+                      },
+                      "ArchivesIsMultiple": {
+                        "type": "Boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/MigrationApi/init/{migratorName}": {
+      "post": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Initialize migration",
+        "description": "Uploads a backup of a migrator specified in the request and initializes the import.",
+        "parameters": [
+          {
+            "name": "migratorName",
+            "in": "path",
+            "description": "Migrator name",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "path",
+            "in": "body",
+            "description": "Path to the backup file",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ]
+      }
+    },
+    "/api/2.0/MigrationApi/status": {
+      "get": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Get migration status",
+        "description": "Returns a status of the running migration process.",
+        "responses": {
+          "200": {
+            "description": "Object with the information about migration status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/MigrationApi/cancel": {
+      "post": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Cancel migration",
+        "description": "Cancels the running migration process."
+      }
+    },
+    "/api/2.0/MigrationApi/migrate": {
+      "post": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Start migration",
+        "description": "Starts the migration process specifying the migration information to be imported (users, modules, groups, etc.).",
+        "parameters": [
+          {
+            "name": "info",
+            "in": "body",
+            "description": "Migration information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Users": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Key": {
+                        "type": "String"
+                      },
+                      "Email": {
+                        "type": "String"
+                      },
+                      "DisplayName": {
+                        "type": "String"
+                      },
+                      "ModuleName": {
+                        "type": "String"
+                      },
+                      "MigratingContacts": {
+                        "type": "object",
+                        "properties": {
+                          "ContactsCount": {
+                            "type": "Int32"
+                          },
+                          "ModuleName": {
+                            "type": "String"
+                          },
+                          "ShouldImport": {
+                            "type": "Boolean"
+                          }
+                        }
+                      },
+                      "MigratingCalendar": {
+                        "type": "object",
+                        "properties": {
+                          "CalendarsCount": {
+                            "type": "Int32"
+                          },
+                          "EventsCount": {
+                            "type": "Int32"
+                          },
+                          "ModuleName": {
+                            "type": "String"
+                          },
+                          "ShouldImport": {
+                            "type": "Boolean"
+                          }
+                        }
+                      },
+                      "MigratingFiles": {
+                        "type": "object",
+                        "properties": {
+                          "FoldersCount": {
+                            "type": "Int32"
+                          },
+                          "FilesCount": {
+                            "type": "Int32"
+                          },
+                          "BytesTotal": {
+                            "type": "Int64"
+                          },
+                          "ModuleName": {
+                            "type": "String"
+                          },
+                          "ShouldImport": {
+                            "type": "Boolean"
+                          }
+                        }
+                      },
+                      "MigratingMail": {
+                        "type": "object",
+                        "properties": {
+                          "MessagesCount": {
+                            "type": "Int32"
+                          },
+                          "ModuleName": {
+                            "type": "String"
+                          },
+                          "ShouldImport": {
+                            "type": "Boolean"
+                          }
+                        }
+                      },
+                      "ShouldImport": {
+                        "type": "Boolean"
+                      }
+                    }
+                  }
+                },
+                "MigratorName": {
+                  "type": "String"
+                },
+                "Modules": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "MigrationModule": {
+                        "type": "String"
+                      },
+                      "Module": {
+                        "type": "String"
+                      }
+                    }
+                  }
+                },
+                "FailedArchives": {
+                  "type": "array",
+                  "items": {
+                    "type": "String"
+                  }
+                },
+                "Groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "GroupName": {
+                        "type": "String"
+                      },
+                      "ModuleName": {
+                        "type": "String"
+                      },
+                      "UserUidList": {
+                        "type": "array",
+                        "items": {
+                          "type": "String"
+                        }
+                      },
+                      "ShouldImport": {
+                        "type": "Boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/api/2.0/MigrationApi/logs": {
+      "get": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Get migration logs",
+        "description": "Returns the logs of the migration process.",
+        "responses": {
+          "200": {
+            "description": "Migration logs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ContentEncoding": {
+                      "type": "Encoding"
+                    },
+                    "ContentStream": {
+                      "type": "Stream"
+                    },
+                    "ContentType": {
+                      "type": "ContentType"
+                    },
+                    "ContentDisposition": {
+                      "type": "ContentDisposition"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/MigrationApi/finish": {
+      "post": {
+        "tags": [
+          "MigrationApi"
+        ],
+        "summary": "Complete migration",
+        "description": "Completes the migration process.",
+        "parameters": [
+          {
+            "name": "isSendWelcomeEmail",
+            "in": "body",
+            "description": "Specifies whether to send a welcome letter to the imported users or not",
+            "schema": {
+              "type": "Boolean"
+            }
+          }
+        ]
       }
     },
     "/api/2.0/portal/": {
@@ -111479,6 +113051,162 @@
         }
       }
     },
+    "/api/2.0/SampleApi/create": {
+      "post": {
+        "tags": [
+          "SampleApi"
+        ],
+        "summary": "Create a module",
+        "description": "Creates a new module for the current portal.",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "body",
+            "description": "Module name",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly created module",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Id": {
+                      "type": "Int32"
+                    },
+                    "Value": {
+                      "type": "String"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/SampleApi/read/{id:[0-9]+}": {
+      "get": {
+        "tags": [
+          "SampleApi"
+        ],
+        "summary": "Get a module",
+        "description": "Returns a module with the ID specified in the request.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "Module ID",
+            "schema": {
+              "type": "Int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Module",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Id": {
+                      "type": "Int32"
+                    },
+                    "Value": {
+                      "type": "String"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/SampleApi/read": {
+      "get": {
+        "tags": [
+          "SampleApi"
+        ],
+        "summary": "Get modules",
+        "description": "Returns all the portal modules.",
+        "responses": {
+          "200": {
+            "description": "List of portal modules",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Id": {
+                        "type": "Int32"
+                      },
+                      "Value": {
+                        "type": "String"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/SampleApi/update": {
+      "put": {
+        "tags": [
+          "SampleApi"
+        ],
+        "summary": "Update a module",
+        "description": "Updates the selected module with a name specified in the request.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "Module ID",
+            "schema": {
+              "type": "Int32"
+            }
+          },
+          {
+            "name": "value",
+            "in": "body",
+            "description": "New module name",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ]
+      }
+    },
+    "/api/2.0/SampleApi/delete/{id:[0-9]+}": {
+      "delete": {
+        "tags": [
+          "SampleApi"
+        ],
+        "summary": "Delete a module",
+        "description": "Deletes a module with the ID specified in the request.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "Module ID",
+            "schema": {
+              "type": "Int32"
+            }
+          }
+        ]
+      }
+    },
     "/api/2.0/security//audit/login/last": {
       "get": {
         "tags": [
@@ -116786,6 +118514,379 @@
                       "ForAdmin": {
                         "type": "Boolean"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/capabilities/": {
+      "get": {
+        "tags": [
+          "capabilities"
+        ],
+        "summary": "Get portal capabilities",
+        "description": "Returns the information about portal capabilities.",
+        "responses": {
+          "200": {
+            "description": "Portal capabilities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "LdapEnabled": {
+                      "type": "Boolean"
+                    },
+                    "OauthEnabled": {
+                      "type": "Boolean"
+                    },
+                    "Providers": {
+                      "type": "array",
+                      "items": {
+                        "type": "String"
+                      }
+                    },
+                    "SsoLabel": {
+                      "type": "String"
+                    },
+                    "SsoUrl": {
+                      "type": "String"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/authentication/": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Authenticate a user",
+        "description": "Authenticates the current user by SMS, authenticator app, or without two-factor authentication.",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "body",
+            "description": "User name or email",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Password",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "provider",
+            "in": "body",
+            "description": "Social media provider type",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "accessToken",
+            "in": "body",
+            "description": "Provider token",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "codeOAuth",
+            "in": "body",
+            "description": "Code for getting a token",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication token to use in the 'Authorization' header when calling API methods",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Token": {
+                      "type": "String"
+                    },
+                    "Expires": {
+                      "type": "String"
+                    },
+                    "Sms": {
+                      "type": "Boolean"
+                    },
+                    "PhoneNoise": {
+                      "type": "String"
+                    },
+                    "Tfa": {
+                      "type": "Boolean"
+                    },
+                    "TfaKey": {
+                      "type": "String"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/authentication/setphone": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Set a mobile phone",
+        "description": "Sets a mobile phone for the user with the name specified in the request.",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "body",
+            "description": "User name or email",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Password",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "provider",
+            "in": "body",
+            "description": "Social media provider type",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "accessToken",
+            "in": "body",
+            "description": "Provider token",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "mobilePhone",
+            "in": "body",
+            "description": "New mobile phone",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication data: authentication by SMS or not, phone number, SMS expiration time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Token": {
+                      "type": "String"
+                    },
+                    "Expires": {
+                      "type": "String"
+                    },
+                    "Sms": {
+                      "type": "Boolean"
+                    },
+                    "PhoneNoise": {
+                      "type": "String"
+                    },
+                    "Tfa": {
+                      "type": "Boolean"
+                    },
+                    "TfaKey": {
+                      "type": "String"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/authentication/sendsms": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Send SMS code",
+        "description": "Sends SMS with an authentication code.",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "body",
+            "description": "User name or email",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Password",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "provider",
+            "in": "body",
+            "description": "Social media provider type",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "accessToken",
+            "in": "body",
+            "description": "Provider token",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication data: authentication by SMS or not, phone number, SMS expiration time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Token": {
+                      "type": "String"
+                    },
+                    "Expires": {
+                      "type": "String"
+                    },
+                    "Sms": {
+                      "type": "Boolean"
+                    },
+                    "PhoneNoise": {
+                      "type": "String"
+                    },
+                    "Tfa": {
+                      "type": "Boolean"
+                    },
+                    "TfaKey": {
+                      "type": "String"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/2.0/authentication/{code}": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Authenticate a user by code",
+        "description": "Authenticates the current user by SMS or two-factor authentication code.",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "body",
+            "description": "User name or email",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Password",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "provider",
+            "in": "body",
+            "description": "Social media provider type",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "accessToken",
+            "in": "body",
+            "description": "Provider token",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "Two-factor authentication code",
+            "schema": {
+              "type": "String"
+            }
+          },
+          {
+            "name": "codeOAuth",
+            "in": "body",
+            "description": "Code for getting a token",
+            "schema": {
+              "type": "String"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Two-factor authentication token to use in the 'Authorization' header when calling API methods",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Token": {
+                      "type": "String"
+                    },
+                    "Expires": {
+                      "type": "String"
+                    },
+                    "Sms": {
+                      "type": "Boolean"
+                    },
+                    "PhoneNoise": {
+                      "type": "String"
+                    },
+                    "Tfa": {
+                      "type": "Boolean"
+                    },
+                    "TfaKey": {
+                      "type": "String"
                     }
                   }
                 }
