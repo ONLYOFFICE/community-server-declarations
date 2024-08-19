@@ -447,11 +447,9 @@ function processSchema(o) {
     return s
   }
 
-  // todo: replace with p.type === "object"
   if (!(o.type.properties === undefined || o.type.properties === null)) {
     const p = {}
     o.type.properties.forEach(e => {
-      // todo: wait for object properties types
       p[e.name] = processSchema(e)
     });
 
@@ -461,7 +459,11 @@ function processSchema(o) {
     if (o.type.properties.length > 0) {
       s.properties = p
     }
-    // const properties = o.type.flatMap((p) => {})
+
+    if (!(o.example === null || o.example === undefined)) {
+      s.example = o.example
+    }
+    
     return s
   }
 
@@ -540,6 +542,10 @@ function processSchema(o) {
       default:
         console.warn(`unknown type ${o.type.name}`)
         s.type = "object"
+    }
+
+    if (!(o.example === null || o.example === undefined)) {
+      s.example = o.example
     }
 
     return s
