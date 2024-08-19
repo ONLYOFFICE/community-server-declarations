@@ -164,6 +164,8 @@ async function build() {
     c.on("close", res)
   })
 
+  base.components.schemas = schemas
+
   const df = join(dd, config.source.file)
   const dc = JSON.stringify(base, null, 2)
   await writeFile(df, dc)
@@ -429,6 +431,8 @@ function processDescription(o) {
   return d
 }
 
+const schemas = {}
+
 /**
  * @param {any} o
  * @returns {any | undefined}
@@ -463,7 +467,16 @@ function processSchema(o) {
     if (!(o.example === null || o.example === undefined)) {
       s.example = o.example
     }
-    
+
+    if (!(o.type.name === undefined || o.type.name === null)) {
+      if (!schemas.hasOwnProperty(o.type.name)) {
+        schemas[o.type.name] = s
+      }
+      return {
+        $ref: `#/components/schemas/${o.type.name}`
+      }
+    }
+
     return s
   }
 
