@@ -295,9 +295,17 @@ function process(p, c) {
   }
 
   const parameters = []
-  // const requestBody = {
-  //   content: {}
-  // }
+  const requestBody = {
+    content: {
+      "application/json": {
+        schema: {
+          type: "object",
+          properties: { }
+        }
+      }
+    }
+  }
+  let hasBody = false
 
   if (!(c.parameters === undefined || c.parameters === null)) {
     c.parameters.forEach((p, i) => {
@@ -347,8 +355,11 @@ function process(p, c) {
         console.warn("failed to set parameter")
       } else {
         if (o.in === "body") {
-          // todo: wait for the content-type
-          parameters.push(o)
+          hasBody = true
+          requestBody.content["application/json"].schema.properties[o.name] = {
+            description: o.description,
+            type: o.schema.type
+          }
         } else {
           parameters.push(o)
         }
@@ -358,6 +369,10 @@ function process(p, c) {
 
   if (parameters.length > 0) {
     object.parameters = parameters
+  }
+
+  if (hasBody) {
+    object.requestBody = requestBody
   }
 
   if(!(c.returns == null || c.returns == undefined)) {
