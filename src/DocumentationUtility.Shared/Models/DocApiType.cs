@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace DocumentationUtility.Shared.Models
 {
@@ -59,7 +61,10 @@ namespace DocumentationUtility.Shared.Models
             }
             foreach (var props in type.GetProperties())
             {
-                Properties.Add(new DocApiProperty(this, props, parents));
+                if (props.GetCustomAttribute<DataMemberAttribute>() != null)
+                {
+                    Properties.Add(new DocApiProperty(this, props, parents));
+                }
             }
         }
 
