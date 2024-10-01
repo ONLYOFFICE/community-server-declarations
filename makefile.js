@@ -360,6 +360,11 @@ function process(p, c) {
             description: o.description,
             type: o.schema.type
           }
+
+          if (o.schema.type == "array" && o.schema.items) {
+            requestBody.content["application/json"].schema.properties[o.name].items = o.schema.items
+          }
+
         } else {
           parameters.push(o)
         }
