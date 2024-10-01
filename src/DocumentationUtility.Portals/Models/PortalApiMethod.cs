@@ -18,7 +18,7 @@ namespace DocumentationUtility.Portals.Models
             var httpMethodAttributes = type.GetCustomAttributes<ApiAttribute>();
             var httpMethod = httpMethodAttributes.First();
 
-            Path = httpMethod.Path;
+            Path = httpMethod.Path.StartsWith("/") ? httpMethod.Path.Substring(1) : httpMethod.Path;
             Method = httpMethod.Method;
         }
 
